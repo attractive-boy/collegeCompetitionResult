@@ -1,40 +1,58 @@
-import { LaptopOutlined, NotificationOutlined, UserOutlined } from '@ant-design/icons';
-import type { MenuProps } from 'antd';
-import { Layout, Menu, theme } from 'antd';
-import React from 'react';
+import { Button, Input, message, Modal } from 'antd';
+import React, { useEffect, useRef, useState } from 'react';
 import Clayout from '@/components/clayout';
+import { UserOutlined, KeyOutlined } from '@ant-design/icons';
 
-const { Header, Content, Footer, Sider } = Layout;
-
-const items2: MenuProps['items'] = [UserOutlined, LaptopOutlined, NotificationOutlined].map(
-  (icon, index) => {
-    //ts-ignore
-    const key = String(index + 1);
-
-    return {
-      key: `sub${key}`,
-      icon: React.createElement(icon),
-      label: `subnav ${key}`,
-
-      children: new Array(4).fill(null).map((_, j) => {
-        //ts-ignore
-        const subKey = index * 4 + j + 1;
-        return {
-          key: subKey,
-          label: `option${subKey}`,
-        };
-      }),
-    };
-  },
-);
+const _userName = 'admin'
+const _passwd = 'admin'
 
 export default function classify() {
-  const {
-    token: { colorBgContainer },
-  } = theme.useToken();
-  return (
-    <Clayout>
-      
-    </Clayout>
-  )
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const showModal = () => {
+        setIsModalOpen(true)
+    }
+    const userName = useRef(null)
+    const passwd = useRef(null)
+    const [messageApi, contextHolder] = message.useMessage();
+    const info = () => {
+        messageApi.error('用户名或者密码错误！')
+    };
+    useEffect(() => {
+    }, []);
+    const login = () => {
+        const input: any = userName.current
+        const passwdInput: any = passwd.current
+        if (input.input.value === _userName && passwdInput.input.value === _passwd) {
+            setIsModalOpen(false)
+        } else {
+            info()
+        }
+    }
+    return (
+        <Clayout>
+            {contextHolder}
+            <Button type="primary" onClick={showModal}>登录</Button>
+            {/* 登录页面 */}
+            <Modal title="登录"
+                centered
+                open={isModalOpen}
+                closable={false}
+                footer={
+                    <div style={{ width: '100%', height: 20 }}>
+                        <Button className="login" type="primary" onClick={login}>登录</Button>
+                    </div>
+                }
+            >
+                <div>
+                    <Input ref={userName} size="large" placeholder="请输入用户名" prefix={<UserOutlined />}
+                    />
+                    {/* 换行 */}
+                    <br />
+                    <br />
+                    <Input type='password' ref={passwd} size="large" placeholder="请输入密码" prefix={<KeyOutlined />}
+                    />
+                </div>
+            </Modal>
+        </Clayout>
+    )
 }

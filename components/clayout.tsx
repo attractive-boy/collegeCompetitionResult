@@ -1,5 +1,4 @@
 import Head from 'next/head'
-import styles from '@/styles/Home.module.css'
 import type { MenuProps } from 'antd';
 import { Layout, Menu } from 'antd';
 import React from 'react';
@@ -42,11 +41,11 @@ export default function Clayout({ children }: any) {
                 <meta name="viewport" content="width=device-width, initial-scale=1" />
                 <link rel="icon" href="/favicon.ico" />
             </Head>
-            <main className={styles.main}>
+            <main className="main">
                 <Header className="header">
                     <div className="logo" />
                     {/* 标题：中南林业科技大学学科竞赛成果展示  */}
-                    <div className={styles.title}>中南林业科技大学学科竞赛成果展示</div>
+                    <div className="title">中南林业科技大学学科竞赛成果展示</div>
                     <Menu theme="dark" mode="horizontal" defaultSelectedKeys={['1']} items={items1} onClick={menuClick}
                         selectedKeys={selectedKeys}
                     />
