@@ -130,14 +130,6 @@ a {
   font-family: 'Open Sans', sans-serif;
   margin-right: 50px;
 }
-.listIcon{
-  /* 蓝色小球 */
-  margin-left: 5px;
-  width: 15px;
-  height: 15px;
-  background-color: blue;
-  border-radius: 50%;
-}
 .content{
   border: 4px;
 }
@@ -146,6 +138,17 @@ a {
   height: 100%;
 }
 .list{
+  width: 100%;
+  font-size: 20px;
+  font-weight: 600;
+  color: black;
+  font-family: 'Open Sans', sans-serif;
+  /* 文字居中 */
+  text-align: center;
+  /* 蓝色的右边框 */
+  border-right: 4px solid #1890ff;
+}
+.addOrEdit{
   width: 100%;
   font-size: 20px;
   font-weight: 600;
