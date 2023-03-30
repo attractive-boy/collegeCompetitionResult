@@ -105,3 +105,7 @@ a {
     color-scheme: dark;
   }
 }
+
+.ant-menu-overflow.ant-menu.ant-menu-root.ant-menu-horizontal.ant-menu-dark{
+  font-size: 20px;
+}
