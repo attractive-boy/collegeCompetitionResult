@@ -17,10 +17,6 @@ const items1: MenuProps['items'] = [
         label: '分类',
     },
     {
-        key: 'search',
-        label:'搜索',
-    },
-    {
         key: 'manage',
         label: '管理',
     }

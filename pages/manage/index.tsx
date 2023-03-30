@@ -28,10 +28,13 @@ export default function classify() {
             info()
         }
     }
+    // 页面加载时，弹出登录框
+    useEffect(() => {
+        showModal()
+    }, [])
     return (
         <Clayout>
             {contextHolder}
-            <Button type="primary" onClick={showModal}>登录</Button>
             {/* 登录页面 */}
             <Modal title="登录"
                 centered
