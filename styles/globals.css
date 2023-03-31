@@ -157,3 +157,29 @@ a {
   /* 文字居中 */
   text-align: center;
 }
+
+.HeadBar{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+/* 搜素框 */
+.ant-input-group-wrapper.ant-input-search.ant-input-search-with-button{
+  width: 500px;
+}
+
+/* 文本展示框 */
+.showArticle{
+  padding: 20px;
+}
+
+.toolbar{
+  position: absolute;
+  right: 7%;
+  margin-top: 10px;
+  z-index: 999;
+}
+.toolbar .ant-btn{
+  margin-left: 10px;
+}
