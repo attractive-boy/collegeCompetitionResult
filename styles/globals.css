@@ -1,9 +1,9 @@
 :root {
   --max-width: 1100px;
   --border-radius: 12px;
-  --font-mono: ui-monospace, Menlo, Monaco, 'Cascadia Mono', 'Segoe UI Mono',
-    'Roboto Mono', 'Oxygen Mono', 'Ubuntu Monospace', 'Source Code Pro',
-    'Fira Mono', 'Droid Sans Mono', 'Courier New', monospace;
+  --font-mono: ui-monospace, Menlo, Monaco, "Cascadia Mono", "Segoe UI Mono",
+    "Roboto Mono", "Oxygen Mono", "Ubuntu Monospace", "Source Code Pro",
+    "Fira Mono", "Droid Sans Mono", "Courier New", monospace;
 
   --foreground-rgb: 0, 0, 0;
   --background-start-rgb: 214, 219, 220;
@@ -106,80 +106,101 @@ a {
   }
 }
 
-.ant-menu-overflow.ant-menu.ant-menu-root.ant-menu-horizontal.ant-menu-dark{
+.ant-menu-overflow.ant-menu.ant-menu-root.ant-menu-horizontal.ant-menu-dark {
   font-size: 20px;
 }
 
-.login{
+.login {
   float: left;
   left: 50%;
   transform: translateX(-50%);
 }
 
-.login::after{
+.login::after {
   content: "";
   display: block;
   clear: both;
 }
 
-.title{
+.title {
   float: left;
   font-size: 30px;
   font-weight: 600;
   color: #fff;
-  font-family: 'Open Sans', sans-serif;
+  font-family: "Open Sans", sans-serif;
   margin-right: 50px;
 }
-.content{
+.content {
   border: 4px;
 }
 .main {
   width: 100%;
   height: 100%;
 }
-.list{
+.list {
   width: 100%;
-  font-size: 20px;
+  padding-left: 10px;
+  font-size: 18px;
   font-weight: 600;
   color: black;
-  font-family: 'Open Sans', sans-serif;
+  font-family: "Open Sans", sans-serif;
   /* 文字居中 */
   text-align: center;
   /* 蓝色的右边框 */
   border-right: 4px solid #1890ff;
+  /* 不换行 */
+  white-space: nowrap;
+  /* 超出部分显示省略号 */
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
-.addOrEdit{
+.list.active {
+  /* 蓝色下边框渐变线 */
+  border-image: linear-gradient(to left, #1890ff, #fff) 1;
+  border-bottom: 8px solid;
+}
+.addOrEdit {
   width: 100%;
   font-size: 20px;
   font-weight: 600;
   color: black;
-  font-family: 'Open Sans', sans-serif;
+  font-family: "Open Sans", sans-serif;
   /* 文字居中 */
   text-align: center;
 }
 
-.HeadBar{
+.HeadBar {
   display: flex;
   justify-content: space-between;
   align-items: center;
 }
 
 /* 搜素框 */
-.ant-input-group-wrapper.ant-input-search.ant-input-search-with-button{
+.ant-input-group-wrapper.ant-input-search.ant-input-search-with-button {
   width: 500px;
 }
 
 /* 文本展示框 */
-.showArticle{
+.showArticle {
   padding: 20px;
 }
 
-.toolbar{
+.toolbar {
   position: absolute;
   right: 7%;
   margin-top: 10px;
   z-index: 999;
 }
-.toolbar .ant-btn{
+.toolbar .ant-btn {
   margin-left: 10px;
+}
+.loading {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 999;
+}
+.Radio-Group{
+  margin-left: 12px;
 }

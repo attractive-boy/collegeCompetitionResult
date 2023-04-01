@@ -1,9 +1,10 @@
-import { Layout, theme, List, message, Modal, Button, Input, MenuProps, Menu, Form, DatePicker, InputNumber, Upload } from 'antd';
+import { Layout, theme, List, message, Modal, Button, Input, MenuProps, Menu, Form, DatePicker, InputNumber, Upload, Radio } from 'antd';
 import React, { useRef, useState } from 'react';
 import { host } from '@/constant';
 import Article from '@/components/article';
-import { UserOutlined, KeyOutlined, InboxOutlined} from '@ant-design/icons';
+import { UserOutlined, KeyOutlined, InboxOutlined, LaptopOutlined, NotificationOutlined } from '@ant-design/icons';
 import Head from 'next/head';
+import mammoth from 'mammoth';
 
 const { Content, Sider } = Layout;
 const { Header } = Layout;
@@ -16,7 +17,7 @@ const _passwd = 'admin'
 //导航头部菜单
 const items1: MenuProps['items'] = [
   {
-    key: '',
+    key: 'index',
     label: '首页',
   },
   {
@@ -50,6 +51,7 @@ export async function getServerSideProps() {
 }
 
 export default function Home(props: any) {
+  const [listData, setListData] = React.useState(props.data);
   const {
     token: { colorBgContainer },
   } = theme.useToken();
@@ -82,13 +84,20 @@ export default function Home(props: any) {
   const menuClick = (e: any) => {
     if (e.key === 'manage') {
       setIsModalOpen(true)
+      setShowClassify(false)
+    }
+    if (e.key === 'index') {
+      window.location.href = '/'
+    }
+    if (e.key === 'classify') {
+      setShowClassify(true)
     }
     setSelectedKeys([e.key])
   }
   const [isSearching, setIsSearching] = React.useState(false);
 
   // 高亮选中的标签
-  const [selectedKeys, setSelectedKeys] = React.useState(['']);
+  const [selectedKeys, setSelectedKeys] = React.useState(['index']);
 
   const [editArticle, setEditArticle] = React.useState(false);
 
@@ -97,16 +106,6 @@ export default function Home(props: any) {
   const newArticle = () => {
     setShowNewArticle(true)
   }
-
-  const saveArticle = () => {
-  }
-
-  const deleteArticle = () => {
-  }
-
-  const handleEditorChange = (value: any) => {
-    setArticleContent(value)
-  }
   const layout = {
     labelCol: { span: 8 },
     wrapperCol: { span: 16 },
@@ -114,7 +113,91 @@ export default function Home(props: any) {
   const [form] = Form.useForm();
 
   const insertRow = () => {
-    console.log(form.getFieldsValue())
+    // post上传
+    const data = form.getFieldsValue()
+    // title, content, type, time, rank, student, teacher , college
+    fetch(`${host}/api/adddocument`, {
+      method: 'POST',
+      body: JSON.stringify(data),
+    }).then(res => {
+      if (res.status === 200) {
+        messageApi.success('保存成功！')
+        // 关闭弹窗
+        setShowNewArticle(false)
+        updateList()
+      }
+    }
+    )
+  }
+
+  const [isloading, setIsloading] = useState(false)
+
+  const [currentArticleId, setCurrentArticleId] = React.useState(listData[0].id);
+
+  //更新list
+  const updateList = () => {
+    fetch(`${host}/api/getlist`)
+      .then(res => res.json())
+      .then(data => {
+        setListData(data)
+      })
+  }
+
+  const [showClassify, setShowClassify] = React.useState(false)
+
+  const [items2, setItems2] = React.useState([])
+
+  //根据类型筛选list赋值给items2
+  const classifyList = (type: string) => {
+    let arr: any = []
+    // 如果是时间，就按照年份分类
+    if (type === 'time') {
+      listData.forEach((item: any) => {
+        arr.push(item[type].slice(0, 4))
+      })
+    } else {
+      listData.forEach((item: any) => {
+        arr.push(item[type])
+      })
+    }
+    console.log(arr)
+    let newArr = [...new Set(arr)]
+    let items: any = []
+    newArr.forEach((item: any) => {
+      let Chlidren: any = []
+      listData.forEach((item2: any) => {
+        if (item2[type] === item || (type === 'time' && item2[type].slice(0, 4) === item)) {
+          Chlidren.push({
+            key: item2.id,
+            label: item2.title,
+            onClick: () => {
+              setIsloading(true);
+              const url = `/api/getdocument`;
+              fetch(url, {
+                method: 'POST',
+                headers: {
+                  'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ id: item2.id }),
+              })
+                .then((res) => res.json())
+                .then((res) => {
+                  setArticleContent(res[0].content);
+                  setIsloading(false);
+                }
+                );
+              setCurrentArticleId(item2.id);
+            }
+          })
+        }
+      })
+      items.push({
+        key: item,
+        label: item,
+        children: Chlidren
+      })
+    })
+    setItems2(items)
   }
   return (
     <>
@@ -188,21 +271,47 @@ export default function Home(props: any) {
           </Form.Item>
           <Form.Item
             label="上传竞赛成果"
-            name="file"
+            name="content"
           >
             {/* 无事件，存储在表单元素中 */}
             <Dragger {...props}
               name="file"
               multiple={false}
               accept=".docx,.doc,.html"
-              customRequest={(option:any) => {
+              customRequest={(option: any) => {
                 //判断文件类型
                 const type = option.file.type
                 if (type !== 'application/msword' && type !== 'application/vnd.openxmlformats-officedocument.wordprocessingml.document' && type !== 'text/html') {
                   messageApi.error('文件类型不支持！')
                   return
                 }
-                
+                //判断文件大小
+                const size = option.file.size
+                if (size > 1024 * 1024 * 10) {
+                  messageApi.error('文件大小不能超过10M！')
+                  return
+                }
+                //如果是html文件，直接读取字符串给表单元素
+                if (type === 'text/html') {
+                  const reader = new FileReader()
+                  reader.readAsText(option.file)
+                  reader.onload = (e) => {
+                    const html = e.target?.result
+                    if (html) {
+                      form.setFieldsValue({ content: html })
+                    }
+                  }
+                  //如果是word文件，转换成html字符串给表单元素
+                } else {
+                  //使用mammoth将word转换成html
+                  mammoth.convertToHtml({ arrayBuffer: option.file.arrayBuffer() })
+                    .then((result) => {
+                      const html = result.value
+                      form.setFieldsValue({ content: html })
+                    })
+                }
+                // 上传成功
+                option.onSuccess()
               }}
             >
               <p className="ant-upload-drag-icon">
@@ -210,7 +319,7 @@ export default function Home(props: any) {
               </p>
               <p className="ant-upload-text">拖拽文件到此处</p>
               <p className="ant-upload-hint">
-                支持点击上传，支持的文件类型为：.docx .doc .html
+                支持点击上传，支持的文件类型为：.docx .doc .html，文件大小不能超过10M
               </p>
             </Dragger>
           </Form.Item>
@@ -243,31 +352,64 @@ export default function Home(props: any) {
           <Layout style={{ padding: '24px 0', background: colorBgContainer }}>
             <Sider style={{ background: colorBgContainer }} width={200}>
               {/* 列表 */}
-              <List
-                dataSource={props.data}
-                renderItem={(item: any) => (
-                  <List.Item>
-                    <a className="list" onClick={() => {
-                      const url = `/api/getdocument`;
-                      fetch(url, {
-                        method: 'POST',
-                        headers: {
-                          'Content-Type': 'application/json',
-                        },
-                        body: JSON.stringify({ id: item.id }),
-                      })
-                        .then((res) => res.json())
-                        .then((res) => {
-                          setArticleContent(res[0].content);
-                        }
-                        );
-                    }}>{item.title}</a>
-                  </List.Item>
-                )}
-              />
+              {!showClassify ?
+                (<List
+                  dataSource={listData}
+                  renderItem={(item: any, index: any) => (
+                    <List.Item>
+                      <a
+                        // 第一个选中
+                        className={index === 0 ? 'list active' : 'list'}
+                        onClick={() => {
+                          // 给改标签添加样式
+                          const list = document.getElementsByClassName('list');
+                          for (let i = 0; i < list.length; i++) {
+                            list[i].classList.remove('active');
+                          }
+                          const e = window.event;
+                          const target = e?.target as HTMLElement;
+                          target.classList.add('active');
+                          setIsloading(true);
+                          const url = `/api/getdocument`;
+                          fetch(url, {
+                            method: 'POST',
+                            headers: {
+                              'Content-Type': 'application/json',
+                            },
+                            body: JSON.stringify({ id: item.id }),
+                          })
+                            .then((res) => res.json())
+                            .then((res) => {
+                              setArticleContent(res[0].content);
+                              setIsloading(false);
+                            }
+                            );
+                          setCurrentArticleId(item.id);
+                        }} title={item.title}>{item.title}</a>
+                    </List.Item>
+                  )}
+                />) : (
+                  <>
+                    <Radio.Group className='Radio-Group' defaultValue="time" buttonStyle="solid"
+                      onChange={(e) => {
+                        const value = e.target.value;
+                        classifyList(value);
+                      }}>
+                      <Radio.Button value="time">时间</Radio.Button>
+                      <Radio.Button value="type">类型</Radio.Button>
+                      <Radio.Button value="college">学院</Radio.Button>
+                    </Radio.Group>
+                    <Menu
+                      mode="inline"
+                      defaultSelectedKeys={['1']}
+                      defaultOpenKeys={['sub1']}
+                      style={{ height: '100%' }}
+                      items={items2}
+                    />
+                  </>)}
             </Sider>
             <Content style={{ minHeight: '70vh' }}>
-              <Article content={articleContent} editArticle={editArticle} newArticle={newArticle} saveArticle={saveArticle} deleteArticle={deleteArticle} handleEditorChange={handleEditorChange}></Article>
+              <Article isLoading={isloading} content={articleContent} editArticle={editArticle} newArticle={newArticle} id={currentArticleId} updateList={updateList}></Article>
             </Content>
           </Layout>
         </Content>
