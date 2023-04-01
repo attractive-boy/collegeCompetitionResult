@@ -140,6 +140,9 @@ a {
 .list {
   width: 100%;
   padding-left: 10px;
+  margin-left: 5px;
+  height: 40px;
+  line-height: 40px;
   font-size: 18px;
   font-weight: 600;
   color: black;
@@ -147,17 +150,17 @@ a {
   /* 文字居中 */
   text-align: center;
   /* 蓝色的右边框 */
-  border-right: 4px solid #1890ff;
+  border-left: 4px solid #1890ff;
   /* 不换行 */
   white-space: nowrap;
   /* 超出部分显示省略号 */
   overflow: hidden;
   text-overflow: ellipsis;
+  margin-bottom: 5px;
 }
 .list.active {
-  /* 蓝色下边框渐变线 */
-  border-image: linear-gradient(to left, #1890ff, #fff) 1;
-  border-bottom: 8px solid;
+  /* 渐变蓝色背景 */
+  background: linear-gradient(to right, #1890ff 0%, #ffffff 100%);
 }
 .addOrEdit {
   width: 100%;
@@ -201,6 +204,9 @@ a {
   transform: translate(-50%, -50%);
   z-index: 999;
 }
-.Radio-Group{
+.Radio-Group {
   margin-left: 12px;
+}
+.ant-list .ant-list-item {
+  padding: 0;
 }

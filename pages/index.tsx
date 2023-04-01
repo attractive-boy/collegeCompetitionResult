@@ -1,8 +1,8 @@
 import { Layout, theme, List, message, Modal, Button, Input, MenuProps, Menu, Form, DatePicker, InputNumber, Upload, Radio } from 'antd';
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { host } from '@/constant';
 import Article from '@/components/article';
-import { UserOutlined, KeyOutlined, InboxOutlined, LaptopOutlined, NotificationOutlined } from '@ant-design/icons';
+import { UserOutlined, KeyOutlined, InboxOutlined } from '@ant-design/icons';
 import Head from 'next/head';
 import mammoth from 'mammoth';
 
@@ -87,10 +87,13 @@ export default function Home(props: any) {
       setShowClassify(false)
     }
     if (e.key === 'index') {
-      window.location.href = '/'
+      setShowClassify(false)
+      setEditArticle(false)
     }
     if (e.key === 'classify') {
+      setEditArticle(false)
       setShowClassify(true)
+      classifyList('time')
     }
     setSelectedKeys([e.key])
   }
@@ -160,7 +163,6 @@ export default function Home(props: any) {
         arr.push(item[type])
       })
     }
-    console.log(arr)
     let newArr = [...new Set(arr)]
     let items: any = []
     newArr.forEach((item: any) => {
@@ -199,6 +201,24 @@ export default function Home(props: any) {
     })
     setItems2(items)
   }
+  const searchInputChange = (e: any) => {
+    if (e === '') {
+      setSearchList(null)
+      return
+    }
+    setIsSearching(true)
+    //过滤list(支持筛选标题，学生，老师，学院，类型，时间，排名）
+    let arr: any = []
+    listData.forEach((item: any) => {
+      if (item.title.includes(e) || item.student.includes(e) || item.teacher.includes(e) || item.college.includes(e) || item.type.includes(e) || item.time.includes(e)) {
+        arr.push(item)
+      }
+    }
+    )
+    setSearchList(arr)
+    setIsSearching(false)
+  }
+  const [SearchList, setSearchList] = React.useState(null)
   return (
     <>
       {contextHolder}
@@ -345,7 +365,13 @@ export default function Home(props: any) {
             <Menu theme="dark" mode="horizontal" defaultSelectedKeys={['1']} items={items1} onClick={menuClick}
               selectedKeys={selectedKeys}
             />
-            <Search allowClear placeholder="请输入搜索关键字" loading={isSearching} size="large" enterButton />
+            {/* 分类的情况下影藏搜索框 */}
+            {!showClassify ?
+              <Search allowClear placeholder="请输入搜索关键字" loading={isSearching} size="large"
+                enterButton onSearch={
+                  searchInputChange
+                }></Search>
+              : null}
           </div>
         </Header>
         <Content style={{ padding: '20px 50px' }}>
@@ -354,7 +380,7 @@ export default function Home(props: any) {
               {/* 列表 */}
               {!showClassify ?
                 (<List
-                  dataSource={listData}
+                  dataSource={SearchList || listData}
                   renderItem={(item: any, index: any) => (
                     <List.Item>
                       <a
