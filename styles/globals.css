@@ -111,9 +111,10 @@ a {
 }
 
 .login {
-  float: left;
-  left: 50%;
-  transform: translateX(-50%);
+  display: flex;
+  width: 100%;
+  justify-content: center;
+  align-items: center;
 }
 
 .login::after {
@@ -209,4 +210,11 @@ a {
 }
 .ant-list .ant-list-item {
   padding: 0;
+}
+
+/* 列表宽度 */
+aside{
+  width: 35% !important;
+  max-width: none !important;
+  min-width: 36% !important;
 }

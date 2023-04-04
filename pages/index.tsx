@@ -89,13 +89,14 @@ export default function Home(props: any) {
     if (e.key === 'index') {
       setShowClassify(false)
       setEditArticle(false)
+      setSelectedKeys([e.key])
     }
     if (e.key === 'classify') {
       setEditArticle(false)
       setShowClassify(true)
       classifyList('time')
+      setSelectedKeys([e.key])
     }
-    setSelectedKeys([e.key])
   }
   const [isSearching, setIsSearching] = React.useState(false);
 
@@ -228,8 +229,13 @@ export default function Home(props: any) {
         open={isModalOpen}
         closable={false}
         footer={
-          <div style={{ width: '100%', height: 20 }}>
-            <Button className="login" type="primary" onClick={login}>登录</Button>
+          <div className="login" style={{ height: 20 }}>
+            <Button type="primary" onClick={()=>{
+              login();
+              setSelectedKeys(['manage']);
+            }}>登录</Button>
+            {/* 取消 */}
+            <Button onClick={() => { setIsModalOpen(false)}}>取消</Button>
           </div>
         }
       >
@@ -346,6 +352,10 @@ export default function Home(props: any) {
           <Form.Item wrapperCol={{ ...layout.wrapperCol, offset: 8 }}>
             <Button type="primary" htmlType="submit">
               提交
+            </Button>
+            &nbsp;&nbsp;&nbsp;&nbsp;
+            <Button htmlType="button" onClick={() => setShowNewArticle(false)}>
+              取消
             </Button>
           </Form.Item>
         </Form>
