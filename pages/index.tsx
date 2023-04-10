@@ -55,21 +55,14 @@ export default function Home(props: any) {
   const {
     token: { colorBgContainer },
   } = theme.useToken();
-
   const [articleContent, setArticleContent] = React.useState(props.articleContent[0].content);
-
   const [isModalOpen, setIsModalOpen] = useState(false);
-
-
   const userName = useRef(null)
   const passwd = useRef(null)
-
   const [messageApi, contextHolder] = message.useMessage();
-
   const info = () => {
     messageApi.error('用户名或者密码错误！')
   };
-
   const login = () => {
     const input: any = userName.current
     const passwdInput: any = passwd.current
@@ -80,7 +73,6 @@ export default function Home(props: any) {
       info()
     }
   }
-
   const menuClick = (e: any) => {
     if (e.key === 'manage') {
       setIsModalOpen(true)
@@ -99,14 +91,10 @@ export default function Home(props: any) {
     }
   }
   const [isSearching, setIsSearching] = React.useState(false);
-
   // 高亮选中的标签
   const [selectedKeys, setSelectedKeys] = React.useState(['index']);
-
   const [editArticle, setEditArticle] = React.useState(false);
-
   const [showNewArticle, setShowNewArticle] = React.useState(false);
-
   const newArticle = () => {
     setShowNewArticle(true)
   }
@@ -115,7 +103,6 @@ export default function Home(props: any) {
     wrapperCol: { span: 16 },
   };
   const [form] = Form.useForm();
-
   const insertRow = () => {
     // post上传
     const data = form.getFieldsValue()
@@ -133,11 +120,8 @@ export default function Home(props: any) {
     }
     )
   }
-
   const [isloading, setIsloading] = useState(false)
-
   const [currentArticleId, setCurrentArticleId] = React.useState(listData[0].id);
-
   //更新list
   const updateList = () => {
     fetch(`${host}/api/getlist`)
@@ -146,11 +130,8 @@ export default function Home(props: any) {
         setListData(data)
       })
   }
-
   const [showClassify, setShowClassify] = React.useState(false)
-
   const [items2, setItems2] = React.useState([])
-
   //根据类型筛选list赋值给items2
   const classifyList = (type: string) => {
     let arr: any = []
@@ -220,6 +201,18 @@ export default function Home(props: any) {
     setIsSearching(false)
   }
   const [SearchList, setSearchList] = React.useState(null)
+  // 在页面加载完成后给.ant-list绑定hover事件
+  useEffect(() => {
+    const list = document.getElementsByClassName('ant-list')[0]
+    const aside = document.getElementsByTagName('aside')[0]
+    aside.style.width = '200px'
+    list.addEventListener('mouseover', (e: any) => {
+      aside.style.animation = 'listWidth 0.3s ease-in-out 0s 1 forwards'
+    })
+    list.addEventListener('mouseout', (e: any) => {
+      aside.style.animation = 'listWidth-back 0.3s ease-in-out 0s 1 forwards'
+    })
+  }, [])
   return (
     <>
       {contextHolder}
@@ -230,12 +223,12 @@ export default function Home(props: any) {
         closable={false}
         footer={
           <div className="login" style={{ height: 20 }}>
-            <Button type="primary" onClick={()=>{
+            <Button type="primary" onClick={() => {
               login();
               setSelectedKeys(['manage']);
             }}>登录</Button>
             {/* 取消 */}
-            <Button onClick={() => { setIsModalOpen(false)}}>取消</Button>
+            <Button onClick={() => { setIsModalOpen(false) }}>取消</Button>
           </div>
         }
       >
@@ -385,8 +378,9 @@ export default function Home(props: any) {
           </div>
         </Header>
         <Content style={{ padding: '20px 50px' }}>
-          <Layout style={{ padding: '24px 0', background: colorBgContainer }}>
-            <Sider style={{ background: colorBgContainer }} width={200}>
+          <Layout style={{ padding: '10px 0', background: colorBgContainer }}>
+            {/* 去掉内联的宽度 */}
+            <Sider style={{ background: colorBgContainer }} width={'unset'}>
               {/* 列表 */}
               {!showClassify ?
                 (<List

@@ -3,16 +3,33 @@ import React from 'react';
 import { Editor } from '@tinymce/tinymce-react';
 import { Button, message, Popconfirm, Spin } from 'antd';
 import { host } from '@/constant';
+import { init } from '@/waline/waline.mjs';
 
 export default function article(props: any) {
     // 存储文章内容的
     // eslint-disable-next-line react-hooks/rules-of-hooks
     const [content, setContent] = React.useState('');
     const [messageApi, contextHolder] = message.useMessage();
+    const [isloading, setIsloading] = React.useState(props.isLoading);
+    // 页面全部加载完毕后，初始化waline评论
+    React.useEffect(() => {
+        if (!isloading) {
+            init({
+                el: '#comment',
+                path: props.id,
+                serverURL: `http://20.120.88.159:8360`,
+                meta: ['nick', 'mail'],
+            });
+        }
+    }, [isloading])
+    // 如果props.isLoading改变，就改变isloading
+    React.useEffect(() => {
+        setIsloading(props.isLoading);
+    }, [props.isLoading])
     return (
         <div className='showArticle'>
             {/* 如果是isloading，显示loading */}
-            {props.isLoading ?
+            {isloading ?
                 <div className='loading'>
                     <Spin size='large' />
                 </div>
@@ -72,7 +89,13 @@ export default function article(props: any) {
                     )
                     :
                     (
-                        <div className='articleContent' dangerouslySetInnerHTML={{ __html: props.content }}>
+                        <div className='articleContent'>
+                            <div dangerouslySetInnerHTML={{ __html: props.content }}>
+                            </div>
+                            {/* 虚线分割线 */}
+                            <div className='line'></div>
+                            {/* 评论区 */}
+                            <div className='comment' id='comment'></div>
                         </div>
                     )
                 )

@@ -1,4 +1,5 @@
 import '@/styles/globals.css'
+import '@/waline/waline.css'
 import "antd/dist/reset.css"
 import type { AppProps } from 'next/app'
 
