@@ -22,7 +22,7 @@ export default function article(props: any) {
                 meta: ['nick', 'mail'],
             });
         }
-    }, [isloading])
+    }, [isloading, props.editArticle])
     // 如果props.isLoading改变，就改变isloading
     React.useEffect(() => {
         setIsloading(props.isLoading);
@@ -33,6 +33,9 @@ export default function article(props: any) {
         const contentChild = content.contentWindow.document.body
         content.style.height = contentChild.scrollHeight + 60 + 'px'
     }
+    React.useEffect(() => {
+        iframeInit();
+    }, [])
     return (
         <div className='showArticle'>
             {/* 如果是isloading，显示loading */}
