@@ -4,7 +4,7 @@ import { host } from '@/constant';
 import Article from '@/components/article';
 import { UserOutlined, KeyOutlined, InboxOutlined } from '@ant-design/icons';
 import Head from 'next/head';
-import mammoth from 'mammoth';
+import convertDocToHtml from '@/utils/convertDocToHtml';
 
 const { Content, Sider } = Layout;
 const { Header } = Layout;
@@ -323,11 +323,9 @@ export default function Home(props: any) {
                   //如果是word文件，转换成html字符串给表单元素
                 } else {
                   //使用mammoth将word转换成html
-                  mammoth.convertToHtml({ arrayBuffer: option.file.arrayBuffer() })
-                    .then((result) => {
-                      const html = result.value
-                      form.setFieldsValue({ content: html })
-                    })
+                  convertDocToHtml(option.file).then((html) => {
+                    form.setFieldsValue({ content: html })
+                  })
                 }
                 // 上传成功
                 option.onSuccess()

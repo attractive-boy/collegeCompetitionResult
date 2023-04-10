@@ -13,7 +13,8 @@ export default function article(props: any) {
     const [isloading, setIsloading] = React.useState(props.isLoading);
     // 页面全部加载完毕后，初始化waline评论
     React.useEffect(() => {
-        if (!isloading) {
+        if (!isloading && !props.editArticle) {
+            //初始化waline评论
             init({
                 el: '#comment',
                 path: props.id,
@@ -26,6 +27,12 @@ export default function article(props: any) {
     React.useEffect(() => {
         setIsloading(props.isLoading);
     }, [props.isLoading])
+    const iframeInit = () => {
+        //获取.content（iframe）子元素的高度给自己
+        const content: any = document.getElementsByClassName('content')[0]
+        const contentChild = content.contentWindow.document.body
+        content.style.height = contentChild.scrollHeight + 60 + 'px'
+    }
     return (
         <div className='showArticle'>
             {/* 如果是isloading，显示loading */}
@@ -90,8 +97,8 @@ export default function article(props: any) {
                     :
                     (
                         <div className='articleContent'>
-                            <div dangerouslySetInnerHTML={{ __html: props.content }}>
-                            </div>
+                            {/* 文章内容:无滚动条，高度由内容决定 */}
+                            <iframe srcDoc={props.content} className='content' title='content' onLoad={iframeInit} />
                             {/* 虚线分割线 */}
                             <div className='line'></div>
                             {/* 评论区 */}

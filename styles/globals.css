@@ -257,3 +257,11 @@ aside{
 .comment .wl-power{
   display: none;
 }
+.tox-statusbar__branding{
+  display: none;
+}
+.content{
+  border: none;
+  width: 100%;
+  display: block;
+}
