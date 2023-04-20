@@ -18,7 +18,7 @@ export default function article(props: any) {
             init({
                 el: '#comment',
                 path: props.id,
-                serverURL: `http://20.120.88.159:8360`,
+                serverURL: `http://47.115.206.168:8360`,
                 meta: ['nick', 'mail'],
             });
         }
