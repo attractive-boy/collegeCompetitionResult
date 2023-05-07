@@ -265,3 +265,7 @@ aside{
   width: 100%;
   display: block;
 }
+/* <button type="button" class="wl-btn">登录</button>  设置成displaynone 不会影响其他的*/
+.wl-btn[type="button"] {
+  display: none;
+}
