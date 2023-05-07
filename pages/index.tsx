@@ -34,7 +34,6 @@ const items1: MenuProps['items'] = [
 export async function getServerSideProps() {
   const res = await fetch(`${host}/api/getlist`)
   const data = await res.json()
-  console.log(data[0])
   const content = await fetch(`${host}/api/getdocument`, {
     method: 'POST',
     headers: {

@@ -10,6 +10,5 @@ export default async function getList(
   //将rank用`rank`包裹起来，因为rank是mysql的关键字
   const query = `SELECT id,title,\`rank\`,time,type,student,teacher,college FROM article ORDER BY time DESC`;
   const results = await excuteQuery({ query, values: [] });
-  console.log(results);
   res.status(200).json(results);
 }
