@@ -13,7 +13,7 @@ export default function Home(props: any) {
     <MyHeader>
       {/* 蓝色的两个通知大字，居中 */}
       <div style={{ textAlign: 'center', fontSize: '3em', color: '#1890ff' }}>
-        <div>通知</div>
+        <div>通知222</div>
       </div>
     </MyHeader>
   )

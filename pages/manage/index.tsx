@@ -9,12 +9,12 @@ import Router from 'next/router';
 import MyHeader from '@/components/MyHeader';
 
 export default function Home(props: any) {
-  return (
-    <MyHeader>
-      {/* 蓝色的两个通知大字，居中 */}
-      <div style={{ textAlign: 'center', fontSize: '3em', color: '#1890ff' }}>
-        <div>通知</div>
-      </div>
-    </MyHeader>
-  )
+    return (
+        <MyHeader>
+            {/* 蓝色的两个通知大字，居中 */}
+            <div style={{ textAlign: 'center', fontSize: '3em', color: '#1890ff' }}>
+                <div>通知333</div>
+            </div>
+        </MyHeader>
+    )
 }
