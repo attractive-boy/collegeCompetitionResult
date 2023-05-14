@@ -55,7 +55,7 @@ export default function notice(props: any) {
         <>
             {/* 新增模态框 */}
             <Modal
-                title="新增"
+                title="成果编辑"
                 width={800}
                 open={visible}
                 onCancel={() => {

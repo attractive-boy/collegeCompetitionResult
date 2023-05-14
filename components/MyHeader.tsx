@@ -67,6 +67,7 @@ export default function MyHeader({ children }: any) {
     // let path = useRouter().pathname.replace('/', '')
     // 取第一级
     let path = useRouter().pathname.split('/')[1]
+    let showSearch = useRouter().pathname.replace('/', '') === 'classify' ? true : false
     return (
         <>
             {contextHolder}
@@ -111,9 +112,14 @@ export default function MyHeader({ children }: any) {
                             selectedKeys={[path]}
                         />
                         {/* 分类的情况下影藏搜索框 */}
-                        {path === 'classify' ?
+                        {showSearch ?
                             <Search allowClear placeholder="请输入搜索关键字" size="large"
-                                enterButton></Search>
+                                enterButton 
+                                onSearch={(value) => {
+                                    // 触发js事件通信
+                                    window.postMessage({ type: 'search', value }, '*')
+                                }}
+                                ></Search>
                             : null}
                     </div>
                 </Header>

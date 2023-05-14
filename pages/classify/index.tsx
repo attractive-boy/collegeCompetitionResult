@@ -28,6 +28,22 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 };
 export default function Home(props: any) {
   const [data, setData] = useState(props.data);
+  // window.postMessage({ type: 'search', value }, '*')
+  useEffect(() => {
+    window.addEventListener('message', (e) => {
+      if (e.data.type === 'search') {
+        const value = e.data.value;
+        fetch(`${host}/api/getAchievement`, {
+          method: 'POST',
+          body: JSON.stringify({ searchValue: value }),
+      })
+          .then((res) => res.json())
+          .then((res) => {
+            setData(res);
+          });
+      }
+    });
+  }, []);
   return (
     <MyHeader>
       {/* 蓝色的两个通知大字，居中 */}

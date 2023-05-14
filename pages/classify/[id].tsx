@@ -48,8 +48,8 @@ export default function Home(props: any) {
                 </div>
                 <div style={{ fontSize: '1.5em', fontWeight: 'bold' }}>竞赛项目：{data[0].project}</div>
                 <div style={{ fontSize: '1.5em', fontWeight: 'bold' }}>获奖级别：{data[0].level}</div>
-                <div style={{ fontSize: '1.5em', fontWeight: 'bold' }}>参赛学生：{data[0].student}</div>
-                <div style={{ fontSize: '1.5em', fontWeight: 'bold' }}>指导老师：{data[0].teacher}</div>
+                <div style={{ fontSize: '1.5em', fontWeight: 'bold' }}>参赛学生：{data[0].student.slice(1, data[0].student.length - 1)}</div>
+                <div style={{ fontSize: '1.5em', fontWeight: 'bold' }}>指导老师：{data[0].teacher.slice(1, data[0].teacher.length - 1)}</div>
                 <br></br>
             </div>
         </div>

@@ -88,7 +88,7 @@ export default function notice(props: any) {
                         <Input />
                     </Form.Item>
                     <Form.Item label="通知链接" name="link">
-                        <Input />
+                        <Input placeholder='http:// or https://开头' />
                     </Form.Item>
                     {/* id */}
                     <Form.Item label="id" name="id" hidden>
