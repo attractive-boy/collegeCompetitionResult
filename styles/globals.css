@@ -269,3 +269,7 @@ aside{
 .wl-btn[type="button"] {
   display: none;
 }
+/* .ant-table里面的所有东西都居中 */
+.ant-table .ant-table-cell{
+  text-align: center !important;
+}

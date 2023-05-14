@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "node staticService.js | next dev -p 3001",
+    "dev": "next dev -p 3001",
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
@@ -18,13 +18,21 @@
     "@zeit/next-css": "^1.0.1",
     "antd": "^5.3.3",
     "babel-plugin-import": "^1.13.6",
+    "busboy": "^1.6.0",
     "express": "^4.18.2",
+    "formidable": "^2.1.1",
+    "jfum": "^1.0.3",
+    "jquery-file-upload-middleware": "^0.1.8",
     "mammoth": "^1.5.1",
     "next": "13.2.4",
     "pm2": "^5.3.0",
     "react": "18.2.0",
     "react-dom": "18.2.0",
+    "react-scripts": "3.4.0",
     "serverless-mysql": "^1.5.4",
     "typescript": "5.0.2"
+  },
+  "devDependencies": {
+    "@types/formidable": "^2.0.6"
   }
 }

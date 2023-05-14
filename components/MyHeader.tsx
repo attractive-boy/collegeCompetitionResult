@@ -47,7 +47,7 @@ export default function MyHeader({ children }: any) {
         const input: any = userName.current
         const passwdInput: any = passwd.current
         if (input.input.value === _userName && passwdInput.input.value === _passwd) {
-            Router.push('/manage')
+            Router.push('/manage/notice')
         } else {
             info()
         }
@@ -64,7 +64,9 @@ export default function MyHeader({ children }: any) {
             setIsModalOpen(true)
         }
     }
-    let path = useRouter().pathname.replace('/', '')
+    // let path = useRouter().pathname.replace('/', '')
+    // 取第一级
+    let path = useRouter().pathname.split('/')[1]
     return (
         <>
             {contextHolder}
