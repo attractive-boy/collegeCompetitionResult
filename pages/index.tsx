@@ -43,7 +43,7 @@ export default function Home(props: any) {
           renderItem={(item: any, index: any) => (
             <List.Item style={{ textAlign: 'center' }}>
               <a
-              style={{ fontSize: '1.5em' , color: '#1890ff' , fontWeight: 'bold' }}
+              style={{ fontSize: '1.5em' , color: 'black' , fontWeight: 'bold' }}
                 onClick={() => {
                   // 跳转
                   window.open(item.link);
