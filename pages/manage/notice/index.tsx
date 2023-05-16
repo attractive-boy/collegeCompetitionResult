@@ -90,6 +90,10 @@ export default function notice(props: any) {
                     <Form.Item label="通知链接" name="link">
                         <Input placeholder='http:// or https://开头' />
                     </Form.Item>
+                    {/* 年度 */}
+                    <Form.Item label="年度" name="year">
+                        <Input />
+                    </Form.Item>
                     {/* id */}
                     <Form.Item label="id" name="id" hidden>
                         <Input />
@@ -146,11 +150,13 @@ export default function notice(props: any) {
                         (
                             <List.Item style={{ textAlign: 'center', position: 'relative', padding: '20px 0', borderBottom: '1px solid #eee' }}>
                                 <>
-                                    {/* 居中展示data，并且边上有修改和删除a标签 删除是红色的 */}
-                                    <Typography.Title level={4} style={{ textAlign: 'center', minWidth: '90%' }}
+                                    {/* 年度 */}
+                                    <div style={{ width:'10%',textAlign:'center',fontWeight:'bold'}}>{item.year}</div>
+                                    {/* 居中展示data，并且边上有修改和删除a标签 删除是红色的 年度 */}
+                                    <Typography.Title level={5} style={{ textAlign: 'center', width: '80%' }}
                                     >{item.title}</Typography.Title>
                                     <a
-                                        style={{ float: 'right', color: 'red', marginRight: '20px' }}
+                                        style={{ float: 'right', color: 'red', marginRight: '20px',width: '5%' }}
                                         onClick={() => {
                                             // 删除
                                             fetch(`${host}/api/deleteNotice`, {
@@ -172,7 +178,7 @@ export default function notice(props: any) {
                                         删除
                                     </a>
                                     <a
-                                        style={{ float: 'right', marginRight: '20px' }}
+                                        style={{ float: 'right', marginRight: '20px',width: '5%' }}
                                         onClick={() => {
                                             // 弹出修改通知的弹窗
                                             setVisible(true);

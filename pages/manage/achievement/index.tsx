@@ -46,6 +46,8 @@ export default function notice(props: any) {
         let values = JSON.parse(JSON.stringify(record));
         values.student = values.student.slice(1, values.student.length - 1);
         values.teacher = values.teacher.slice(1, values.teacher.length - 1);
+        // 学院
+        values.college = values.college.slice(1, values.college.length - 1);
         // 设置表单的值
         form.setFieldsValue(values);
         // 清空文件
@@ -68,6 +70,7 @@ export default function notice(props: any) {
                         //学生和老师用数组存储起来
                         values.student = values.student.split(',');
                         values.teacher = values.teacher.split(',');
+                        values.college = values.college.split(',');
                         fetch(`${host}/api/addAchievement`, {
                             method: 'POST',
                             body: JSON.stringify(values),
@@ -151,7 +154,7 @@ export default function notice(props: any) {
                         name="college"
                         rules={[{ required: true, message: '请输入学院' }]}
                     >
-                        <Input /></Form.Item>
+                        <Input placeholder='用英文逗号隔开' /></Form.Item>
                     <Form.Item
                         label="指导老师"
                         name="teacher"
@@ -169,7 +172,6 @@ export default function notice(props: any) {
                     <Form.Item
                         label="成果照片"
                         name="photo"
-                        rules={[{ required: true, message: '请上传成果照片' }]}
                     >
                         <Upload.Dragger name="files"
                             // 限制一个文件

@@ -35,9 +35,12 @@ export default function AchievementTable(props: any) {
             text: item.level,
             value: item.level,
         });
-        filters.college.push({
-            text: item.college,
-            value: item.college,
+        const collegeArr = item.college.slice(1, item.college.length - 1).split(',');
+        collegeArr.forEach((college: any) => {
+            filters.college.push({
+                text: college,
+                value: college,
+            });
         });
         filters.team.push({
             text: item.team,
@@ -74,7 +77,17 @@ export default function AchievementTable(props: any) {
                         return <div key={item}>{item}</div>
                     })}</div>
                 )} />
-                <Table.Column title="学院" dataIndex="college" width={100} filters={filters.college} onFilter={(value, record:any) => record.college === value} />
+                <Table.Column title="学院" dataIndex="college" width={100} filters={filters.college} 
+                onFilter={(value, record:any) => {
+                    const collegeArr = record.college.slice(1, record.college.length - 1).split(',');
+                    return collegeArr.includes(value);
+                }}
+                render={(text, record: any, index) => (
+                    // 去掉前后两个逗号，其他的逗号都是换行
+                    <div key={index}>{text.slice(1, text.length - 1).split(',').map((item: any) => {
+                        return <div key={item}>{item}</div>
+                    })}</div>
+                )} /> 
                 <Table.Column title="指导老师" dataIndex="teacher" width={100} render={(text, record: any, index) => (
                     // 去掉前后两个逗号，其他的逗号都是换行
                     <div key={index}>{text.slice(1, text.length - 1).split(',').map((item: any) => {
