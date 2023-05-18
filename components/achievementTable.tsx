@@ -19,39 +19,46 @@ export default function AchievementTable(props: any) {
     }, [props.data]);
     const Router = useRouter();
     // 生成过滤器对象(年度，获奖级别，学院，团队赛或个人赛)
-    const filters = {
-        year: [] as any,
-        level: [] as any,
-        college: [] as any,
-        team: [] as any,
+    let filters: any = {
+        year: new Set(),
+        level: new Set(),
+        college: new Set(),
+        team: new Set(),
     };
-    // 给过滤器对象赋值
     data.forEach((item: any) => {
-        filters.year.push({
-            text: item.year,
-            value: item.year,
-        });
-        filters.level.push({
-            text: item.level,
-            value: item.level,
-        });
+        filters.year.add(item.year);
+        filters.level.add(item.level);
         const collegeArr = item.college.slice(1, item.college.length - 1).split(',');
         collegeArr.forEach((college: any) => {
-            filters.college.push({
-                text: college,
-                value: college,
-            });
+            filters.college.add(college);
         });
-        filters.team.push({
-            text: item.team,
-            value: item.team,
-        });
+        filters.team.add(item.team);
     });
-    // 去重
-    filters.year = Array.from(new Set(filters.year));
-    filters.level = Array.from(new Set(filters.level));
-    filters.college = Array.from(new Set(filters.college));
-    filters.team = Array.from(new Set(filters.team));
+    filters.year = Array.from(filters.year).map((item: any) => {
+        return {
+            text: item,
+            value: item,
+        };
+    });
+    filters.level = Array.from(filters.level).map((item: any) => {
+        return {
+            text: item,
+            value: item,
+        };
+    });
+    filters.college = Array.from(filters.college).map((item: any) => {
+        return {
+            text: item,
+            value: item,
+        };
+    });
+    filters.team = Array.from(filters.team).map((item: any) => {
+        return {
+            text: item,
+            value: item,
+        };
+    });
+
     return (
         <>
             {/* 表格 年度（可筛选）竞赛项目 获奖级别（可筛选）获奖作品 获奖学生 学院（可筛选） 指导老师 团队赛或个人赛（可筛选） 操作（修改或删除）宽度保证全部展示出来 */}
@@ -59,9 +66,9 @@ export default function AchievementTable(props: any) {
                 rowKey={(record: any) => record.id}
             >
                 {/* 筛选 获取所有年度，竞赛项目，获奖级别，学院，团队赛或个人赛 */}
-                <Table.Column title="年度" dataIndex="year" width={100} filters={filters.year} onFilter={(value, record:any) => record.year === value} />
+                <Table.Column title="年度" dataIndex="year" width={100} filters={filters.year} onFilter={(value, record: any) => record.year === value} />
                 <Table.Column title="竞赛项目" dataIndex="project" width={200} />
-                <Table.Column title="获奖级别" dataIndex="level" width={100} filters={filters.level} onFilter={(value, record:any) => record.level === value} />
+                <Table.Column title="获奖级别" dataIndex="level" width={100} filters={filters.level} onFilter={(value, record: any) => record.level === value} />
                 <Table.Column title="获奖作品" dataIndex="work" width={100} render={(text, record: any, index) => (
                     // a标签 浅蓝色 点击跳转
                     <a style={{ color: 'skyblue' }}
@@ -77,24 +84,24 @@ export default function AchievementTable(props: any) {
                         return <div key={item}>{item}</div>
                     })}</div>
                 )} />
-                <Table.Column title="学院" dataIndex="college" width={100} filters={filters.college} 
-                onFilter={(value, record:any) => {
-                    const collegeArr = record.college.slice(1, record.college.length - 1).split(',');
-                    return collegeArr.includes(value);
-                }}
-                render={(text, record: any, index) => (
-                    // 去掉前后两个逗号，其他的逗号都是换行
-                    <div key={index}>{text.slice(1, text.length - 1).split(',').map((item: any) => {
-                        return <div key={item}>{item}</div>
-                    })}</div>
-                )} /> 
+                <Table.Column title="学院" dataIndex="college" width={100} filters={filters.college}
+                    onFilter={(value, record: any) => {
+                        const collegeArr = record.college.slice(1, record.college.length - 1).split(',');
+                        return collegeArr.includes(value);
+                    }}
+                    render={(text, record: any, index) => (
+                        // 去掉前后两个逗号，其他的逗号都是换行
+                        <div key={index}>{text.slice(1, text.length - 1).split(',').map((item: any) => {
+                            return <div key={item}>{item}</div>
+                        })}</div>
+                    )} />
                 <Table.Column title="指导老师" dataIndex="teacher" width={100} render={(text, record: any, index) => (
                     // 去掉前后两个逗号，其他的逗号都是换行
                     <div key={index}>{text.slice(1, text.length - 1).split(',').map((item: any) => {
                         return <div key={item}>{item}</div>
                     })}</div>
                 )} />
-                <Table.Column title="团队赛或个人赛" dataIndex="team" width={150} filters={filters.team} onFilter={(value, record:any) => record.team === value} />
+                <Table.Column title="团队赛或个人赛" dataIndex="team" width={150} filters={filters.team} onFilter={(value, record: any) => record.team === value} />
                 // 只有admin才有
                 {admin &&
                     <Table.Column
